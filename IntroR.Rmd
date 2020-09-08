@@ -1,0 +1,31 @@
+---
+title: "Introduction to R"
+author: "Selahattin Murat Sirin"
+date: "08/09/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Outline
+
+ - R Ecosystem
+ - R Basics
+ - Data Analysis
+ - Graphics
+ - R Markdown
+ 
+## R Ecosystem
+
+R is a free  statistical computing software. It can be downloaded from CRAN website for free (https://cran.r-project.org/). The  latest version is R 4.0.2. If you have difficulties in installing the latest version, you can install older versions from (https://cran.r-project.org/src/base/R-3/)  - the last is the 3.6.3.  
+
+RStudio’s IDE (Integrated Development Environment) offers a very versatile user interface. There are other IDEs; however, RStudio is the most popular among R users.
+It can be installed from (https://rstudio.com/)
+
+Most people want to use cloud services to save their work. RStudio can interface with Git(Hub). You can create a free GitHub account, and save your work in there
+
+update.packages(ask = FALSE, checkBuilt = TRUE)
+Note: this will only look for updates on CRAN. So if you use a package that lives only on GitHub or if you want a development version from GitHub, you will need to update manually, e.g. via devtools::install_github().
+ 
