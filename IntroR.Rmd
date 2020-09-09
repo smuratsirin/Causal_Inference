@@ -2,11 +2,14 @@
 title: "Introduction to R"
 author: "Selahattin Murat Sirin"
 date: "08/09/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: default
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ## Outline
@@ -24,8 +27,250 @@ R is a free  statistical computing software. It can be downloaded from CRAN webs
 RStudio’s IDE (Integrated Development Environment) offers a very versatile user interface. There are other IDEs; however, RStudio is the most popular among R users.
 It can be installed from (https://rstudio.com/)
 
-Most people want to use cloud services to save their work. RStudio can interface with Git(Hub). You can create a free GitHub account, and save your work in there
+Most people want to use cloud services to save their work. RStudio can interface with Git(Hub). You can create a free GitHub account from (https://github.com/), and save your work in there.
 
-update.packages(ask = FALSE, checkBuilt = TRUE)
-Note: this will only look for updates on CRAN. So if you use a package that lives only on GitHub or if you want a development version from GitHub, you will need to update manually, e.g. via devtools::install_github().
+## Functions and Packages 
+
+R is an object-oriented programming which organizes software design around data, or objects, rather than functions and logic. An object can be defined as a data field that has unique attributes and behavior. 
+
+Each function has 6 elements: 
+
+1) Name and description
+2) Usage
+3) Arguments
+4) Details
+5) Values
+6) Dependencies and references
+
+```{r eval = FALSE}
+## Check the sum function
+sum
+```
+
+```{r eval = FALSE}
+?sum
+```
+
+
+All functions are provided through packages, and it provides significant flexibility. On the other hand, unlike other statistical programs such as Stata or Eviews, each package has different function properties, so the same task can be done with diffent packages. Be careful about syntax!
+
+```{r eval = FALSE, echo = TRUE}
+install.packages()
+library()
+require()
+```
+
+
+## Example
+
+An example using `install.packages` function
+
+```{r eval = FALSE, echo = TRUE}
+install.packages("dplyr", dependencies = TRUE)
+```
+
+Load installed package using `library` or `require` functions
+
+```{r eval = FALSE, echo = TRUE}
+library(dplyr)
+require(dplyr)
+```
+
+You can also load package useing `p_load` function provided in **pacman** package. When sharing your work with others, this might be a better solution.
+
+```{r eval = FALSE}
+install.packages("pacman")
+library(pacman)
+p_load(dplyr)
+```
+
+Use `update.packages` function to update packages.
+
+## Session Info
+
+Always check your session before starting any project
+
+```{r}
+## Provides information about session
+sessionInfo() 
+```
+
+## R objects
+
+```{r}
+a <- 5; b <- "a"; c <- TRUE
+A <- c(1:5)
+B <- c("a", "b", "c")
+```
+
+```{r}
+class(a); class(b); class(c)
+```
+
+```{r}
+class(A); class(B)
+```
+
+## Dates
  
+```{r}
+date1 <- as.Date("10/23/2016", format = "%m/%d/%Y")
+date2 <- as.Date("23 October 16", format = "%d %B %y")
+date3 <- as.Date("11/10/2016", format = "%m/%d/%Y")
+```
+ 
+```{r}
+date1 - date2
+weekdays(date2)
+as.numeric(date3)
+```
+ 
+Besides base operations, **lubridate** package allows multiple operations with dates.
+
+## Mathematical Operations
+
+```{r eval = FALSE}
+5 + 5 # Addition
+5 - 5 #  Subtraction
+5 * 5 # Multiplication
+5 / 5 # Division
+0 / 0 # Division: Not a number (NaN) 
+pi # Pi 
+sqrt(5) # Square root
+5^2 # Exponent 
+5**2 # Exponent
+5 %/% 2 # Division  
+5%%2 # Modulo
+abs(-5) # Absolute value
+log(5) # ln
+exp(5) # Exponent
+log10(5) # log10
+log2(5) # log2
+round(5/2, digits = 2) # Rounding
+signif(12345.6789, digits = 5) # Rounding
+ceiling(5/2) # The highest integer
+floor(5/2) # The lowest integer
+trunc(5.48) # Integers formed by truncating the values in x toward 0
+```
+
+## Mathematical operations
+
+Lag and Lead
+
+```{r}
+library(dplyr)
+x <- seq(1:10)
+lag(x,1)
+```
+
+```{r}
+lag(x,2)
+```
+
+```{r}
+lead(x,1)
+```
+
+```{r}
+lead(x,2)
+```
+
+## Mathematical operations
+
+Cumulative Sum, Cumulative Product, Extremes
+
+```{r}
+cumsum(x)
+```
+
+```{r}
+cumprod(x)
+```
+
+```{r}
+cummax(x)
+cummin(x)
+cummean(x)
+```
+
+## Mathematical operations
+
+```{r}
+x <- 1:20
+first(x)
+last(x)
+nth(x,9)
+range(x)
+```
+
+## R Operators
+
+- <- Assign value
+- =  Assign value
+- :  Generate regular sequences
+- c() Combine Values into a Vector or List
+- < Smaller
+- > Greater
+- <= Smaller or equal
+- >= Greater or equal
+- == Equal
+- != Not equal
+- | Or
+- & And
+
+## Matrix operations
+
+ - `matrix()` Creates matrix
+ - `rbind()` Bind rows 
+ - `cbind()` Bind columns
+ - `ncol()` Number of columns  
+ - `nrow()` Number of rows 
+ - `t()` Transpose of a matrix 
+ - `det()` Determinant of a matrix
+ - `eigen()` Eigen values
+ - `solve()` Solves equation
+ - `diag()` Construct a diagonal matrix
+ - `A%*%B` Dot product
+ - `A%o%B` Outer product
+ - `crossprod(A,B)` Return a matrix cross-product
+ - `kronecker()` Computes the generalised kronecker product 
+ 
+## Matrix examples
+
+```{r eval = FALSE}
+A <- matrix(c(2,5,7,1,6,12,3,2,2), byrow = TRUE, ncol = 3)
+a <- c(2,5,7)
+b <- c(1,6,12)
+c <- c(3,2,2)
+B <- rbind(a,b,c)
+t(A) 
+solve(A)
+eigen(A) 
+diag(4) 
+```
+
+To select an element in a matrix you can use `A[2,3]`. This gives the element in the second row and third column
+
+## Data Structure
+
+- Vector (Atomic) is the fundamental data structure. There are six basic vector types: (1) Logical, (2) Integer, (3) Double, (4) Character, (5) Complex, (6) Raw. Use `c()` or `vector()` functions to create vectors. The elements of a vector are all of the same type.
+
+- List is referred as generic vector. The elements may be different types. Use `list()` to create a list.
+
+- Matrix is a two dimensional array. Use `matrix()` to create a matrix.
+
+- Array is a multi-dimensional vector. All elements should be the same type. Use `array()`  to create an array
+
+## Data frame
+
+- Data frame is stored as a list of vectors, factors and/or matrices each of which has the same length. Use `data.frame()` to create a data frame.
+
+```{r}
+df <-  data.frame(a = c(1:10), b = rnorm(10, 0, 0.5), c = rep(c(1:2)))
+```
+
+```{r echo = FALSE}
+library(knitr)
+kable(head(df), caption = "Data Frame")
+```
+
