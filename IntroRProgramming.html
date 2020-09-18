@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Introduction to R</title>
+  <title>Introduction to Programming in R</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -9,7 +9,6 @@
 
 
 
-  <meta name="date" content="2020-08-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +19,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Introduction to R',
+                title: 'Introduction to Programming in R',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -3121,670 +3120,222 @@ slide:not(.current) .plotly.html-widget{
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">08/09/2020</p>
+            <p style="margin-top: 6px; margin-left: -2px;">September 2020</p>
           </hgroup>
   </slide>
 
 <slide class=""><hgroup><h2>Outline</h2></hgroup><article  id="outline" class="smaller ">
 
 <ul>
-<li>R Ecosystem</li>
-<li>R Basics</li>
-<li>Data Analysis</li>
-<li>Graphics</li>
-<li>R Markdown</li>
+<li>Functions</li>
+<li>Programming Basics in R</li>
+<li>Loops</li>
+<li>Apply functions</li>
+<li>purrr package</li>
 </ul>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>BASIC R OPERATIONS</h2></hgroup><article  id="basic-r-operations" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>Functions</h2></hgroup><article  id="functions" class="smaller ">
 
-</article></slide><slide class=""><hgroup><h2>R Ecosystem</h2></hgroup><article  id="r-ecosystem" class="smaller ">
+<p>A <strong>function</strong> is a set of statements organized together to perform a specific task. each function has four components:</p>
 
-<p>R is a free statistical computing software. It can be downloaded from CRAN website for free (<a href='https://cran.r-project.org/' title=''>https://cran.r-project.org/</a>). The latest version is R 4.0.2. If you have difficulties in installing the latest version, you can install older versions from (<a href='https://cran.r-project.org/src/base/R-3/' title=''>https://cran.r-project.org/src/base/R-3/</a>) - the last is the 3.6.3.</p>
+<ul>
+<li>Function Name: Functions are stored as an object with this name.</li>
+<li>Argument: When a function is invoked, you pass a value to the argument.</li>
+<li>Function Body: The function body contains a collection of statements that defines what the function does.</li>
+<li>Return Value: The return value of a function is the last expression in the function body to be evaluated.</li>
+</ul>
 
-<p>RStudio’s IDE (Integrated Development Environment) offers a very versatile user interface. There are other IDEs; however, RStudio is the most popular among R users. It can be installed from (<a href='https://rstudio.com/' title=''>https://rstudio.com/</a>)</p>
-
-<p>Most people want to use cloud services to save their work. RStudio can interface with Git(Hub). You can create a free GitHub account from (<a href='https://github.com/' title=''>https://github.com/</a>), and save your work in there.</p>
-
-</article></slide><slide class=""><hgroup><h2>Functions and Packages</h2></hgroup><article  id="functions-and-packages" class="smaller ">
-
-<p>R is an object-oriented programming which organizes software design around data, or objects, rather than functions and logic. An object can be defined as a data field that has unique attributes and behavior.</p>
-
-<p>Each function has 6 elements:</p>
-
-<ol>
-<li>Name and description</li>
-<li>Usage</li>
-<li>Arguments</li>
-<li>Details</li>
-<li>Values</li>
-<li>Dependencies and references</li>
-</ol>
-
-<pre class = 'prettyprint lang-r'>## Check the sum function
-sum</pre>
-
-<pre class = 'prettyprint lang-r'>?sum</pre>
-
-<p>All functions are provided through packages, and it provides significant flexibility. On the other hand, unlike other statistical programs such as Stata or Eviews, each package has different function properties, so the same task can be done with diffent packages. Be careful about syntax!</p>
-
-<pre class = 'prettyprint lang-r'>install.packages()
-library()
-require()</pre>
+<pre class = 'prettyprint lang-r'>function_name &lt;- function(arg_1, arg_2, ...) {
+   Function body 
+}</pre>
 
 </article></slide><slide class=""><hgroup><h2>Example</h2></hgroup><article  id="example" class="smaller ">
 
-<p>An example using <code>install.packages</code> function</p>
+<p>A basic function that shows basic statistics</p>
 
-<pre class = 'prettyprint lang-r'>install.packages(&quot;dplyr&quot;, dependencies = TRUE)</pre>
+<pre class = 'prettyprint lang-r'>summary &lt;- function(x){
+  a1 &lt;- mean(x) ; a2 &lt;- median(x); a3 &lt;- var(x); a4 &lt;- sd(x)
+  output &lt;- data.frame(Mean = a1, Median = a2, Var = a3, SD = a4)
+  return(output)
+}
 
-<p>Load installed package using <code>library</code> or <code>require</code> functions</p>
+x &lt;- 1:10
+summary(x)</pre>
+
+<pre >##   Mean Median      Var      SD
+## 1  5.5    5.5 9.166667 3.02765</pre>
+
+</article></slide><slide class=""><hgroup><h2>Pipes (Magrittr)</h2></hgroup><article  id="pipes-magrittr" class="smaller ">
+
+<p>Pipes are a powerful tool for clearly expressing a sequence of multiple operations. <strong>magrittr</strong> package ofefrs a couple of pipe operators that can be versatile in programming.</p>
+
+<pre class = 'prettyprint lang-r'>library(tidyverse)
+set.seed(123)
+rnorm(100) %&gt;%
+  matrix(ncol = 2) %&gt;%
+  plot()</pre>
+
+<p><img src="data:image/png;base64,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" width="384" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Pipes</h2></hgroup><article  id="pipes" class="smaller ">
+
+<p>Look at the difference between <code>%&gt;%</code> and <code>%T&gt;%</code>. First, try the code below with the pipe operator. Then, try with <code>%T&gt;%</code>.</p>
+
+<pre class = 'prettyprint lang-r'>library(tidyverse)
+data(mtcars)
+mtcars %&gt;%
+  select(gear,mpg) %T&gt;%
+  plot() %&gt;%
+  apply(2,mean)</pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwAAAAMACAMAAACkX/C8AAAA1VBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZrY6AAA6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kJA6kLY6kNtmAABmOgBmOjpmZjpmZmZmZpBmkJBmkLZmkNtmtttmtv+QOgCQOjqQZgCQZjqQZmaQkDqQkLaQtraQttuQtv+Q2/+2ZgC2Zjq2kDq2kGa2kJC2kLa2tpC2tra2ttu227a229u22/+2///bkDrbkGbbtmbbtpDbtrbb25Db27bb29vb2//b/7bb////tmb/25D/27b/29v//7b//9v///+gCtj8AAAACXBIWXMAAB2HAAAdhwGP5fFlAAAavklEQVR4nO3df2PTRoKHcTmEmLCFPUjW3RywS6+wJJdrzRLShEs4nID8/l/SaSTL1sga14qlkUbf5/NHa+xEE8V6bP10ojkgLOr6BwC6RACQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQRgCQ1u8AIsDS/CLW+BQb1PVvG/3T+DLW9ASb1ELwCBoBQBoBQBoBQBoBQBoBQBoBQBoBCGprD3iICEBPe8eAAkQAcpYLPgXMCUBPYbHnt0EAeoq/An4dBCCHACwEoIYALASghgAsBKCGACwEoIYALASght2gFgKQw4GwIgLQw6kQBQQgiOV/hQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAEcS7QCgHo4WzQAgKQw/UARQSghivCLASghmuCLQSghgAsBKCGACwEoIYALASghgAsBKCGACwEoIbdoBYCkMOBsCIC0MOpEAUEIIjlf4UAII0AII0AII0AII0AII0AII0AII0AII0AII0AII0AII0AII0AII0AII0AIC3AAOLbL9Pp9OPttwd8LwHAFloAN29X1zNFzz7V/XYCgC2sAO6PItv+h3oTIADYggpgNjYL/eEk88T8Y/S61hQIwJC8JNIx0yEF8ONlssC/L9xxnQSx97nOJMSe9GqSF8W7ZjqkAC7XFneTxIs6k5B6zh0kPxbFOdMBBRC/iaLyCs8sih7X2Rsk9JS7SH4wlnumAwogeblfW9+pum8TnafcSfKjEd0zTQBqCCDUAJJVoFF5ryerQLURQKgBzE/XlnazWXBQZxIyz7gbAQQbwN04KeCicMd9svyvvSlsJPOMuxFAsAGY/aDJEj95NzV+z46E1doLqvOMuxFAuAHMr8alUyFGr+pNQOYZd2M3aOmRxsdqeoJF8XkxgdFJ3TNCdZ5yNw6E2Q80PlTTEyyJb6bnk8nkZPrpAedDCz3lbpwKYd3f+EhNT/Dhogpd/0x9IPm7GMDJcLURAP5MuAHcTD9+rf1NBABbcAFkV0IuNob33//Zl5cQAGxhBXD/NsquAjvN12ie15sAAcAWVAB32T7Q0YdZ8t+nk8mYA2HYUUgBmMtfosMnyXvAUXYGRHzGqRDYTUgBmCvCLhbvA9mVMeZkOK4Iww4CCmB5Rdjl6qxQTofGbgIKYHnxS/IWcFC+b0sEAFuIASQ3Dsr3bYkAYAsrgGyLN/7H4V8W6z3JmwEBYAcBBWB2/pe3eC+5Igw7CSmA2dpOz3s+Fwi7CSkAsxso+stqp096PkStnUAEgJKQApj/OLI+Gy79qMR6n45LALAFFYB5zbcD2L/Y8NUVCAC2sAKwxb/VXPwJAGUhB/AABAAbAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAUAaAQjiDwauEIAe/mRmAQHIkfxL8U4EoKaw2PPbIAA9xV8Bvw4CkEMAFgJQQwAWAlBDABYCUEMAFgJQQwAWAlDDblALAcjhQFgRAejhVIgCAhDE8r9CAJBGAJBGAJBGAJBGAJBGAJBGAJBGANDgOPhBAJDgOvxNAFDgPAGKACDAfQosAUCA+yIIAoAAAlggAE3DCyD+Mv34tf63EYCmYQTw/TZf5K+P0h1ao+ffak6CADQNIoAfL6O9z+ZGfLbcpzt6XW8aBKBpWAGcmiX/p8nk2CRQrwAC0DSI3aB5ALNkbrJ1n/s30aKJbRGAqCEcCMsDSN4ADhZ3xUkBL+pMgwBUDeBUiEUAZqFfrvck7waP62wIE4Cs8E+GWwSw3BQo3Lc1AoCNACAtvACSbYDRh/y+uzEBYBeBBWCW/Flhw5dtAOwmrAASj/7+6Z/LtwBzF3uBsIPgAsik6z3xH2OOA2A3AQWQLPE358fjVQCmiNXmwFYIALagAkilFeQB7F/U+2YCgC28AFbi32ou/gSAspAD+FNRha5/JvQLAUDaoANYRwCwBRZAfH58+NOvq0NfnAqB3YQVwB/ZTtDRSZ4AATwEq4MrQQVwuVyTz89/IIAHYIOoIKQA7pLX//33t7dn5v/ZYk8A9TkvjpIUUgCX+Sv//VFeAAHU5r48VlJAARQuBTM30xYIoDb3ByRICiiA4sJuCjiYE8ADEIAl0ADyE6EJoDYCsIQagNkiHn0ggPoIwBJQANbHQaQXg+1dEEBtBGAJKACzF+jA/ufevwmgLgKwhBSAOQ7wrPCR0Kera2O2xTPOblBbSAGkR4KLy/sZATwAB8KKggpgflX6FJSruhcF85TPORXCElYA8/j6Z+tTUOKzMQHUxvK/4iOA+Mu05LbpQbfFkw6bjwCKn2eSe1b7ct5GEABsXQVQ9/NMGkIAsPlZBfpvs8Q/ezed/jI2l7P8/nZc8yMNG/vhCAAWLxvB5i3gPxbL+2W638bcU/PPezWCAGDzEoB1CPc0PYttZh/V9YUAYPOyCvSmuMZ/NzZrP9l/vSMA2DxtBBd21mf/qnsWW0MIADYCgDRPq0CFLd5ZtFgFIgB0z9dG8HJpX1zKdclGMPrA227Q0av05uL0NfO/Wn/apSEEAJufk+Fm2Se6HWbHgF+nRXSxBkQAKU6GW/F0Nujd0fIcCPM3LZIAOBWiM5wOXeDtdOibt0+S3/ijZ5/MP+Jffu3iRAgCMLggpiiw6wF2xVPOJZE2AlDDRfEWfwHEN11eCbPAM04ANl8BXOdbwU+7uRJmgWecAGx+AjDHgpe62P+f4xknAJufAMwn+Ix++nX6P3/ruACecQKweQlgliz1z7P9nvFZV1dDpnjGCcDmJYDT0gUxB+tf4gnPOLtBbZ5Oh167IKYjPOUcCLN1dT1AR3jK55wKYfF0PQAB9AnL/4qv6wGsC2IOmh5zazzpsPm5HuAo2suPf9lvB74RAGyeDoS9zS+IuT/qci8oAaDEy0bw8WF6Kcyj7H+jw8xTrglG5zr7bNBuLgkjANgIANK4HgDS1ANgl7g48QA4KKpOO4DiJklHP1EXBGfZyVMA8fUvk5Wfe3IyXKQZgOI8O/kJ4Grc+f6fzHoA5VvDx9mgRd4uiOlpABU3B86a6S5/kH7wdUFM9Ozj7dLXpsfcWjkA1yMDJjnTbr4OhHV5JXwBAWjOtJv/C2I6RQBmRpfbwDIz7eb/gphOEYC960tlpt08bQN0eQp0ERvBoru+nHz9gYyDpod5GHaDalbv5uc4wN04/1ygjnEgjABsno4E3x+l18N0eClMhlMhNN/23Ly9AzR3ICy+/TKdTj/ePuQthZPh2Ai2eQmgtPzvEsDN28J0sj83U+uH43RodoNafB0JHp3cNnAk+P4osu3X3LvEM66579fN15Hg1xVfWVv2xyYPF+eUmr85Zv7kZK0fjmecACwhHQlO/9zw+8Id1+O6q1M845wMZwvpSPDl2uJe+ywjnnJOh7b5/2jEBzN/ZqY8mVlU76Omecrnkru+3LwEkCy6DXwietWaVN21K55zg+V/xdNHI76J9mvvsiwjADTP50cjRrsdCU4qWjunjlUg7KaTT4Z74Cbx6drSbjYLDmr9cAQAS0gBmAPKj4t/Zvj+Td2/uEcAsAX1uUCX6aGvybup8Xt2JKzetZYEAFtQAZQ/XiXK/+rA1ggAtrACmMfnxQRGJ3V3rhIAbIEFkIhvpueTyeRk+ukBhxYIQJbj4Ed4AdQQVej6Z0I3XEsAAUCB8wSoQQewjgA0uU+BDSyA+Pz48KdfVyv/nAqBbbgvgggrgD/Gpb0/BIBtDCSAy+WafH5KBAFgG8MIwJwKsf/+9vbM/D9b7AkA2xhGAJf5K7+5Nj4rgACwjUEEULgizNxMW9g5AMm9o3ozPYgAigt7fh70rgFIHh8QnOlB7Aa1FvbF5fA7BuA8PDJkzLT9QONDNT3BnL2wJ1vEow87BuB+XRgwyZkexKkQpU+FmEXR3sWuAbgeGTDJmZ4P4mS4S/v6R/MxQf8mgLokZ9otpADMcYBnhc8VPU2LJoB6JGfaLaQA0iPBxeX9jADqk5xpt6ACMJdEWsv7Vd0PB10LYLlmKLMsEIAlrADm8fXP1nVg8dl4t71AelcKEIAlsAB2tR7A8lYXP04XRHeDuhBAfquLH6cTkjPtJB+A3CqQ5KkQbuIBCG4EzxVPhnNTD8DxCFQQQOUjUEEAlY9AhXoAktsAWBEPQHEnEIqkA2CXOKQD4B0A4gGwDaBOPQDHI8PGm94KAVQ+Mmis9hUQQOUjQ8aWfxEBVD4yYJwObSGAykcGTHKm3cQDEHwxJACLdACSq8MEYNEOQHGHCAFYxAMQ3CVOABYCIABp4gFIrgIJbvm7aQeguBGsOdNO0gGIvhgKvu25iQfgemTYWP5XCKDyEagggMpHoIIAKh+BCgKofAQqCKDyEagQD0ByNygKpAPgmBC0A+CYkDzxADgmpI4ACECaeACsAqnTDoCNYHnSAbAbFOIBuB6BCgKofAQqCKDyEagggMpHoIIAKh+BCgKofAQqxANgN6gMxxFP6QA4EKbDdcxfOwBOhVDhfKkLNYD4y/Tj1/rfxslwmtwruyEF8P02X+Svj9KldvT8W81JsKRrcu/uCCiAHy+jvc/mRny2XHEZva43Dd4BNA0rgFOz5P80mRybJbdeAWwDaBpUALNkcc3Wfe7fRIsmtsVeIE2DCiB5AzhY3BUnBbyoMw2OA2gaUgBmoV+u9yTvBo/rbAhzJFjTkAJYbgoU7tva2swvNwEIYMgGsRu0jQCKGvtB0T9DOBC22gYYfcjvuxvvGkD5FoZpAKdCmADMkj8rbPjuug0QVdzEIIV/MlwSQOLR3z/9c/kWYO7aaS+Q6xEMzTDeAZbS9Z74j/FuxwF4B5AxhG2AZIm/OT8erwIwRaw2B7bCNoCmQewFWkgryAPYv6j3zewF0jSI4wBr4t9qLv4cB1A1zAD+VFTB/XhXPyXaRwDOAJa3uvgB4YloAOsIQBMBLLAKpIkAFtgI1jSk3aA74UiwqGEcCNsd7wCqBnYqRAGnQ2MbjqdZPoDyLWgJKID5/VHzAVQ/ABkhBVD/Gvg1vAPAFlQA9gXxD8E2AGxhBVD7GuAy9gLBFlgA1vWQD8BxANhCCyBZCdrlLYAAYAstgPndZPKvh383AcAWXAC7YTcobNIBuM8QgQrtAJxniECFeACuM0SgQj0AiCMASFMPgFUgceIBsBGsTjsAdoPKkw6AA2EQD8D1CFQQQOUjUEEAlY9ABQFUPgIVBFD5CFQQQOUjUCEeALtB1UkHwIEwaAfAqRDyxAPgZDh16gFAHAFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAGgFAWoABxLdfptPpx9tvD/heAoAttABu3q7+pkX07FPdbycA2MIK4P4osu1/qDcBAoAtqABmY7PQH04yT8w/Rq9rTYG/EANbSAH8eJks8O8Ld1wnQex9rjMJ/kYYbCEFcLm2uJskXtSZBH8lEraAAojfRFF5hWcWRY/r7A3i7wTDFlAAycv92vpO1X2b8JfiYSOAykegIqAAklWgUXmv566rQK5HoCKgAOana0u72Sw4qDMJAoAtpADuxkkBF4U77pPlf+1NYSMCgC2kAMx+0GSJn7ybGr9nR8Jq7QUlAJQEFcD8alw6FWL0qt4E2A0KW1gBzOPzYgKjk7pnhHIgDLbAAkjEN9PzyWRyMv30gPOhORUCtvACqCGq4PiSTn4+dE89AIgbdADrCAA2AoA0AoA0AoA0AoC0gAIwl39V2OF0aIAAIC2gANY/FOUhAQC2phfTFl9jzen/9c7+LOv6l43+aWjhXC1jTU+woOq6+J11t1rU4QqZ5NB+Rm51kLrXAG9j6E8IQ/sdud1BZruuBK0b+hPC0H5HbneQZCWo6beAoT8hDO135JYHuZtM/tXsFIf+hDC035GD29M+9CeEof2OTAABjKw5NAFUGvoTwtB+RyaAAEbWHJoAKg39CWFovyMTQAAjaw5NAJWG/oQwtN+RCSCAkTWHJoBKQ39CGNrvyAQQwMiaQxNApaE/IQztd2QCCGBkzaEJoNLQnxCG9jsyAQQwsubQBAC0jgAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgjQAgre8BXB9HUfTo5FvFQ/dvx1E0enbhe+T4TbT0uqXBE3fjqqm3PNPuoVue642Tb3Om+x3A8tcyWv+dX40XD/2n55F/vPQRgBnF90xvGrrlud40+VZnutcBbHpZmHX2glQYucUATqum3u5Mbzt0G2NvmHy7M93rAC6T6s06yP8eRdFje13EvGLsJ++JN8lDe599jmwea3HpW5hVPd8tz/Smoduea/fkW57pPgeQvAyPPqS3kl/C4lbuMl8wzWv1C58jJy+Q7S18uWyNoLxItDvTG4due67dk295pvscQLItdrC4WX6BWC2h5qvKr9FtjmyGbny8smSMvf9aWwpbnulNQ7c91+7Jtz3TfQ6g4LT0lCQvU/nvovAb8jGyGfqgveEyprr1lQIvM109dNtz7Z582zMdRgDJb8F+h0zWUw/y22uLaKsjm6Ff35tdpE/ftzVo8lL3omKt2MdMO4Zue67dk297pkMIID4fl+d8VlgdbHHzrGLkZLjR3xY7JZ61thaSvOhVBtD2TLuGbnuu3ZNve6b7H8Bpugv4lX1n8Vcxa2uDsHLk7N6FdlaLT9N3+vVn28NMu4Zue67dk297pgMJ4NEr+5fuL4DyyGZfRLqH9P5t1M7Ai/npIgDn0C3P9YbJywcQ/+PweOz9dcE9cmG/6GUrO6bzrb4OAnAP3fJcb5i8fACp+6PI3kvg5R2gcuQC87rV/Ip4vke8gwDcQxe0M9fOyRNAqnw8ylsAVUfCij9F4yMv58x/ABuGLn1Zi7/v8uQJIFP6tXjaC1QxclELT8jqEJz3vUCbhnb9GC2Y+X2mQwlg/ddykN9u9TjAxue7hUXhMrJ5nOlNQxd5D+Agv616HMAo/Vr8HQne9Hy38Iq0aSlseaa3DcDvaXHKR4KLKx+l+Fs+Q2TDyIWHNm0e7DCycylsf6adQ7c/167JK58LlMywc99bu+cIbhg5eWjx7/jUvYOoAZWHYz2cDVo5dMtzvWnywmeDpodHXlUffUnPEv/U1lniG0ZePmRGbnPdq/qMtBZnetPQLc/1psm3PNN9DmB+X7hO7iC9Z/UGOVs91MIa6YaR78Z/vprchNVS6GumNw3d8lyvT97XTPc6gPQwVOZ5tvJXWEP8o9XLYzeMfJc/1OqFuZUBtDzTm4Zuea7XJu9rpvsdQP7ZDMsPBChuInn5VIiqkePFB0Z8bWnkTGUAfj4VonLolue6PHlfM933AIBWEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEQCkEUB/3B9HUfT04sfL6PG39I746tDc8/5b/hXfz80do6fvs3+eJl94/cR8Tyc/7yAQQG9cRpm/5gHcjRf37F/YXxEtviAJ4Mr8a/Shu586dATQF7Mospfv5fIfRXufzVdcFr7ihbnjNHqUfs1Blz934AigJ5IVn/SV/mq8CCC9471ZDxpni7i54/nX5MbN0SKRU/OlrP7shAB64jIqrPiYW7P8DrPkm5Wc2fKlPvmS9D3hdPkleCgC6IlkYX6d3VqkcLpatZ8tVnlySRF5AC/m2AkB9EO+TM/T1/ckgNW+oPSeg+VXfv/yyzhaBvDa9w86NATQD4XlPbtp1vjLm8Xx9fG4uFl8yv6fnRFAP2Qv+6ksgMI+oDyA4l0E0BAC6Ie1d4BCEasvSTx6+vO7/3tJAE0hgH6o2gbI71i4XB4R+0EAjSGAfojflPYCFe5YfkW+uM9YBWoMAfTE8jiAWdMxt5I79lanQLwoBHD/kgAaQwA9kR8Jvi4eCR69Sm58P8vO9jnNviA+H+en/xDA7gigL9bOBSre8aL0bwJoCgH0xtrZoLNxcfmfz8/yhf9ksX1AALsjgP5YXA+wOu4bp6f/Pzr5uviC6+P0n9/y04IIYHcE0DvWiQ9oGQH0xOq8Hk5x84kAeiJZ7EfmSkezz6d0BAwtIoCeKJ7owxuAPwTQF1djlv8OEEBvfD9/Yu3zgQ8EAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGkEAGn/D+uAKrP/jowGAAAAAElFTkSuQmCC" width="384" /></p>
+
+<pre >##     gear      mpg 
+##  3.68750 20.09062</pre>
+
+</article></slide><slide class=""><hgroup><h2>Infix operators</h2></hgroup><article  id="infix-operators" class="smaller ">
+
+<p>Infix operators in R are unique functions and methods that facilitate basic data expressions or transformations.</p>
+
+<ul>
+<li>:: Extract function from a package namespace</li>
+<li>$ Extract list subset</li>
+<li>@ Extract Slot selection<br/></li>
+<li>[ and [[ Extract Subscripting<br/></li>
+<li>%in% Comparison Value Matching<br/></li>
+<li>xor Logical Exclusive</li>
+<li>&amp;&amp; Logical and (control)</li>
+</ul>
+
+<p>For a list of infix operators check (<a href='https://bit.ly/32ewCNP' title=''>https://bit.ly/32ewCNP</a>)</p>
+
+</article></slide><slide class=""><hgroup><h2>If-else</h2></hgroup><article  id="if-else" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>if(cond) cons.expr else alt.expr
+ifelse(test, yes, no)</pre>
 
 <pre class = 'prettyprint lang-r'>library(dplyr)
-require(dplyr)</pre>
-
-<p>You can also load package useing <code>p_load</code> function provided in <strong>pacman</strong> package. When sharing your work with others, this might be a better solution.</p>
-
-<pre class = 'prettyprint lang-r'>install.packages(&quot;pacman&quot;)
-library(pacman)
-p_load(dplyr)</pre>
-
-<p>Use <code>update.packages</code> function to update packages.</p>
-
-</article></slide><slide class=""><hgroup><h2>Session Info</h2></hgroup><article  id="session-info" class="smaller ">
-
-<p>Always check your session before starting any project</p>
-
-<pre class = 'prettyprint lang-r'>## Provides information about session
-sessionInfo() </pre>
-
-<pre >## R version 3.6.2 (2019-12-12)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 10 x64 (build 18363)
-## 
-## Matrix products: default
-## 
-## locale:
-## [1] LC_COLLATE=English_Canada.1252  LC_CTYPE=English_Canada.1252   
-## [3] LC_MONETARY=English_Canada.1252 LC_NUMERIC=C                   
-## [5] LC_TIME=English_Canada.1252    
-## 
-## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
-## loaded via a namespace (and not attached):
-##  [1] compiler_3.6.2  magrittr_1.5    tools_3.6.2     htmltools_0.4.0
-##  [5] yaml_2.2.1      Rcpp_1.0.4.6    stringi_1.4.6   rmarkdown_2.1  
-##  [9] knitr_1.28      stringr_1.4.0   xfun_0.13       digest_0.6.25  
-## [13] rlang_0.4.7     evaluate_0.14</pre>
-
-</article></slide><slide class=""><hgroup><h2>R objects</h2></hgroup><article  id="r-objects" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>a &lt;- 5; b &lt;- &quot;a&quot;; c &lt;- TRUE
-A &lt;- c(1:5)
-B &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)</pre>
-
-<pre class = 'prettyprint lang-r'>class(a); class(b); class(c)</pre>
-
-<pre >## [1] &quot;numeric&quot;</pre>
-
-<pre >## [1] &quot;character&quot;</pre>
-
-<pre >## [1] &quot;logical&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>class(A); class(B)</pre>
-
-<pre >## [1] &quot;integer&quot;</pre>
-
-<pre >## [1] &quot;character&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Dates</h2></hgroup><article  id="dates" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>date1 &lt;- as.Date(&quot;10/23/2016&quot;, format = &quot;%m/%d/%Y&quot;)
-date2 &lt;- as.Date(&quot;23 October 16&quot;, format = &quot;%d %B %y&quot;)
-date3 &lt;- as.Date(&quot;11/10/2016&quot;, format = &quot;%m/%d/%Y&quot;)</pre>
-
-<pre class = 'prettyprint lang-r'>date1 - date2</pre>
-
-<pre >## Time difference of 0 days</pre>
-
-<pre class = 'prettyprint lang-r'>weekdays(date2)</pre>
-
-<pre >## [1] &quot;Sunday&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>as.numeric(date3)</pre>
-
-<pre >## [1] 17115</pre>
-
-<p>Besides base operations, <strong>lubridate</strong> package allows multiple operations with dates.</p>
-
-</article></slide><slide class=""><hgroup><h2>Mathematical operations</h2></hgroup><article  id="mathematical-operations" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>5 + 5 # Addition
-5 - 5 #  Subtraction
-5 * 5 # Multiplication
-5 / 5 # Division
-0 / 0 # Division: Not a number (NaN) 
-pi # Pi 
-sqrt(5) # Square root
-5^2 # Exponent 
-5**2 # Exponent
-5 %/% 2 # Division  
-5%%2 # Modulo
-abs(-5) # Absolute value
-log(5) # ln
-exp(5) # Exponent
-log10(5) # log10
-log2(5) # log2
-round(5/2, digits = 2) # Rounding
-signif(12345.6789, digits = 5) # Rounding
-ceiling(5/2) # The highest integer
-floor(5/2) # The lowest integer
-trunc(5.48) # Integers formed by truncating the values in x toward 0</pre>
-
-</article></slide><slide class=""><hgroup><h2>Mathematical operations</h2></hgroup><article  id="mathematical-operations-1" class="smaller ">
-
-<p>Lag and Lead</p>
-
-<pre class = 'prettyprint lang-r'>library(dplyr)
-x &lt;- seq(1:10)
-lag(x,1)</pre>
-
-<pre >##  [1] NA  1  2  3  4  5  6  7  8  9</pre>
-
-<pre class = 'prettyprint lang-r'>lag(x,2)</pre>
-
-<pre >##  [1] NA NA  1  2  3  4  5  6  7  8</pre>
-
-<pre class = 'prettyprint lang-r'>lead(x,1)</pre>
-
-<pre >##  [1]  2  3  4  5  6  7  8  9 10 NA</pre>
-
-<pre class = 'prettyprint lang-r'>lead(x,2)</pre>
-
-<pre >##  [1]  3  4  5  6  7  8  9 10 NA NA</pre>
-
-</article></slide><slide class=""><hgroup><h2>Mathematical operations</h2></hgroup><article  id="mathematical-operations-2" class="smaller ">
-
-<p>Cumulative Sum, Cumulative Product, Extremes</p>
-
-<pre class = 'prettyprint lang-r'>cumsum(x)</pre>
-
-<pre >##  [1]  1  3  6 10 15 21 28 36 45 55</pre>
-
-<pre class = 'prettyprint lang-r'>cumprod(x)</pre>
-
-<pre >##  [1]       1       2       6      24     120     720    5040   40320  362880
-## [10] 3628800</pre>
-
-<pre class = 'prettyprint lang-r'>cummax(x)</pre>
-
-<pre >##  [1]  1  2  3  4  5  6  7  8  9 10</pre>
-
-<pre class = 'prettyprint lang-r'>cummin(x)</pre>
-
-<pre >##  [1] 1 1 1 1 1 1 1 1 1 1</pre>
-
-<pre class = 'prettyprint lang-r'>cummean(x)</pre>
-
-<pre >##  [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5</pre>
-
-</article></slide><slide class=""><hgroup><h2>Mathematical operations</h2></hgroup><article  id="mathematical-operations-3" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>x &lt;- 1:20
-first(x)</pre>
-
-<pre >## [1] 1</pre>
-
-<pre class = 'prettyprint lang-r'>last(x)</pre>
-
-<pre >## [1] 20</pre>
-
-<pre class = 'prettyprint lang-r'>nth(x,9)</pre>
-
-<pre >## [1] 9</pre>
-
-<pre class = 'prettyprint lang-r'>range(x)</pre>
-
-<pre >## [1]  1 20</pre>
-
-</article></slide><slide class=""><hgroup><h2>R Operators</h2></hgroup><article  id="r-operators" class="smaller ">
-
-<ul>
-<li>&lt;- Assign value</li>
-<li>= Assign value</li>
-<li>: Generate regular sequences</li>
-<li>c() Combine Values into a Vector or List</li>
-<li>(&lt;) Smaller</li>
-<li>(&gt;) Greater</li>
-<li>&lt;= Smaller or equal</li>
-<li><blockquote>
-<p>= Greater or equal</p>
-</blockquote></li>
-<li>== Equal</li>
-<li>!= Not equal</li>
-<li></li>
-<li>&amp; And</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Matrix operations</h2></hgroup><article  id="matrix-operations" class="smaller ">
-
-<ul>
-<li><code>matrix()</code> Creates matrix</li>
-<li><code>rbind()</code> Bind rows</li>
-<li><code>cbind()</code> Bind columns</li>
-<li><code>ncol()</code> Number of columns<br/></li>
-<li><code>nrow()</code> Number of rows</li>
-<li><code>t()</code> Transpose of a matrix</li>
-<li><code>det()</code> Determinant of a matrix</li>
-<li><code>eigen()</code> Eigen values</li>
-<li><code>solve()</code> Solves equation</li>
-<li><code>diag()</code> Construct a diagonal matrix</li>
-<li><code>A%*%B</code> Dot product</li>
-<li><code>A%o%B</code> Outer product</li>
-<li><code>crossprod(A,B)</code> Return a matrix cross-product</li>
-<li><code>kronecker()</code> Computes the generalised kronecker product</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Matrix examples</h2></hgroup><article  id="matrix-examples" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>A &lt;- matrix(c(2,5,7,1,6,12,3,2,2), byrow = TRUE, ncol = 3)
-a &lt;- c(2,5,7)
-b &lt;- c(1,6,12)
-c &lt;- c(3,2,2)
-B &lt;- rbind(a,b,c)
-t(A) 
-solve(A)
-eigen(A) 
-diag(4) </pre>
-
-<p>To select an element in a matrix you can use <code>A[2,3]</code>. This gives the element in the second row and third column</p>
-
-</article></slide><slide class=""><hgroup><h2>Data structure</h2></hgroup><article  id="data-structure" class="smaller ">
-
-<ul>
-<li><p>Vector (Atomic) is the fundamental data structure. There are six basic vector types: (1) Logical, (2) Integer, (3) Double, (4) Character, (5) Complex, (6) Raw. Use <code>c()</code> or <code>vector()</code> functions to create vectors. The elements of a vector are all of the same type.</p></li>
-<li><p>List is referred as generic vector. The elements may be different types. Use <code>list()</code> to create a list.</p></li>
-<li><p>Matrix is a two dimensional array. Use <code>matrix()</code> to create a matrix.</p></li>
-<li><p>Array is a multi-dimensional vector. All elements should be the same type. Use <code>array()</code> to create an array</p></li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Data frame</h2></hgroup><article  id="data-frame" class="smaller ">
-
-<ul>
-<li>Data frame is stored as a list of vectors, factors and/or matrices each of which has the same length. Use <code>data.frame()</code> to create a data frame.</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>df &lt;-  data.frame(a = c(1:10), b = rnorm(10, 0, 0.5), c = rep(c(1:2)))</pre>
+library(knitr)
+data(mtcars)
+mtcars%&gt;%
+  mutate(Efficiency = ifelse(mpg &lt;= 10 ,&quot;F&quot;,ifelse(
+    mpg &gt;11 &amp; mpg &lt;= 15,&quot;E&quot;,ifelse(
+      mpg &gt; 15 &amp; mpg &lt;=20,&quot;D&quot;,ifelse(
+        mpg &gt; 20 &amp; mpg &lt;=25,&quot;C&quot;,ifelse(
+          mpg &gt; 25 &amp; mpg &lt;=30,&quot;B&quot;,&quot;A&quot;)))))) %&gt;% 
+  select(mpg, Efficiency) %&gt;% head() %&gt;% kable()</pre>
 
 <table class = 'rmdtable'>
-<caption>Data Frame</caption>
 <tr class="header">
-<th align="right">a</th>
-<th align="right">b</th>
-<th align="right">c</th>
+<th align="right">mpg</th>
+<th align="left">Efficiency</th>
 </tr>
 <tr class="odd">
-<td align="right">1</td>
-<td align="right">0.3004054</td>
-<td align="right">1</td>
+<td align="right">21.0</td>
+<td align="left">C</td>
 </tr>
 <tr class="even">
-<td align="right">2</td>
-<td align="right">-0.5770396</td>
-<td align="right">2</td>
+<td align="right">21.0</td>
+<td align="left">C</td>
 </tr>
 <tr class="odd">
-<td align="right">3</td>
-<td align="right">-0.5600967</td>
-<td align="right">1</td>
+<td align="right">22.8</td>
+<td align="left">C</td>
 </tr>
 <tr class="even">
-<td align="right">4</td>
-<td align="right">-0.0221811</td>
-<td align="right">2</td>
+<td align="right">21.4</td>
+<td align="left">C</td>
 </tr>
 <tr class="odd">
-<td align="right">5</td>
-<td align="right">0.1731569</td>
-<td align="right">1</td>
+<td align="right">18.7</td>
+<td align="left">D</td>
 </tr>
 <tr class="even">
-<td align="right">6</td>
-<td align="right">-0.2475702</td>
-<td align="right">2</td>
+<td align="right">18.1</td>
+<td align="left">D</td>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2>Basic data functions</h2></hgroup><article  id="basic-data-functions" class="smaller ">
+</article></slide><slide class=""><hgroup><h2>For</h2></hgroup><article  id="for" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>for(var in seq) expr</pre>
+
+<p>Replicate the scale function <code>scale()</code>:</p>
+
+<pre class = 'prettyprint lang-r'>row &lt;- nrow(mtcars)
+col &lt;- ncol(mtcars)
+for.mtcars_normalized &lt;- data.frame(1:row)
+for (i in 1:col) {
+  avr &lt;- mean(mtcars[,i])
+  dev &lt;- sd(mtcars[,i])
+  for (j in 1:row) {
+    for.mtcars_normalized[j,i] &lt;- (mtcars[j,i] - avr) / dev 
+    }
+  }
+names(for.mtcars_normalized) &lt;- names(mtcars)
+head(for.mtcars_normalized, n=5L)[1:5]</pre>
+
+<pre >##          mpg        cyl       disp         hp       drat
+## 1  0.1508848 -0.1049878 -0.5706198 -0.5350928  0.5675137
+## 2  0.1508848 -0.1049878 -0.5706198 -0.5350928  0.5675137
+## 3  0.4495434 -1.2248578 -0.9901821 -0.7830405  0.4739996
+## 4  0.2172534 -0.1049878  0.2200937 -0.5350928 -0.9661175
+## 5 -0.2307345  1.0148821  1.0430812  0.4129422 -0.8351978</pre>
+
+<p>Check <code>while</code> and <code>repeat</code> functions as well.</p>
+
+</article></slide><slide class=""><hgroup><h2>Apply family</h2></hgroup><article  id="apply-family" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>apply(x, MARGIN, FUN, ...)
+lapply(X, FUN, ...)
+sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)
+mapply(FUN, times, X, MoreArgs = NULL, SIMPLIFY = TRUE,
+       USE.NAMES = TRUE)</pre>
+
+<p>Use apply function to get sum of rows</p>
+
+<pre class = 'prettyprint lang-r'>m1 &lt;- matrix(1:30, nrow = 5, byrow = TRUE)
+apply(m1, 1, sum)</pre>
+
+<pre >## [1]  21  57  93 129 165</pre>
+
+<p>Use apply function to get sum of columns</p>
+
+<pre class = 'prettyprint lang-r'>apply(m1, 2, sum)</pre>
+
+<pre >## [1] 65 70 75 80 85 90</pre>
+
+</article></slide><slide class=""><hgroup><h2>Foreach</h2></hgroup><article  id="foreach" class="smaller ">
+
+<p><strong>foreach</strong> package offers functions for programming</p>
+
+<pre class = 'prettyprint lang-r'>foreach(X, .combine, ...) %do% FUN</pre>
+
+<pre class = 'prettyprint lang-r'>library(foreach)
+foreach(a = 1:5,b = 1:5, .combine=&#39;c&#39;) %do% {a*b}</pre>
+
+<pre >## [1]  1  4  9 16 25</pre>
+
+<pre class = 'prettyprint lang-r'>library(foreach)
+set.seed(123)
+foreach(a = 1:5, .combine = &#39;cbind&#39;) %do% {rnorm(5)}</pre>
+
+<pre >##         result.1   result.2   result.3   result.4   result.5
+## [1,] -0.56047565  1.7150650  1.2240818  1.7869131 -1.0678237
+## [2,] -0.23017749  0.4609162  0.3598138  0.4978505 -0.2179749
+## [3,]  1.55870831 -1.2650612  0.4007715 -1.9666172 -1.0260044
+## [4,]  0.07050839 -0.6868529  0.1106827  0.7013559 -0.7288912
+## [5,]  0.12928774 -0.4456620 -0.5558411 -0.4727914 -0.6250393</pre>
+
+</article></slide><slide class=""><hgroup><h2>purrr package</h2></hgroup><article  id="purrr-package" class="smaller ">
+
+<p><strong>purrr</strong> package offers new fucntions that is used for machine learning. For a list of tutorials see:</p>
 
 <ul>
-<li><code>head()</code> returns the first part of a vector</li>
-<li><code>tail()</code> returns the first part of a vector</li>
-<li><code>names()</code>,<code>colnames()</code> displays column names</li>
-<li><code>dim()</code> retrieves the dimension of an object</li>
-<li><code>str()</code> displays the structure of an R Object</li>
-<li><code>table()</code> used for cross tabulation</li>
-<li><code>xtabs()</code> creates a contingency table</li>
-<li><code>margin.table()</code> creates contingency table in array form</li>
-<li><code>prop.table()</code> express table nntries as a fraction of marginal table</li>
-<li><code>ftable()</code> creates &lsquo;flat&rsquo; contingency tables</li>
-</ul>
-
-</article></slide><slide class=""><hgroup><h2>Basic data functions - Examples</h2></hgroup><article  id="basic-data-functions---examples" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-head(mtcars)</pre>
-
-<pre >##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
-## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
-## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
-## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
-## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
-## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
-## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</pre>
-
-</article></slide><slide class=""><hgroup><h2>Basic data functions - Examples</h2></hgroup><article  id="basic-data-functions---examples-1" class="smaller ">
-
-<p>In basic R operations, you can use <code>with()</code> function to evaluate an expression in an environment constructed from data.</p>
-
-<pre class = 'prettyprint lang-r'>## Create cross-table
-with(mtcars, table(cyl, gear))</pre>
-
-<pre >##    gear
-## cyl  3  4  5
-##   4  1  8  2
-##   6  2  4  1
-##   8 12  0  2</pre>
-
-</article></slide><slide class=""><hgroup><h2>Missing data</h2></hgroup><article  id="missing-data" class="smaller ">
-
-<ul>
-<li><code>complete.cases()</code> returns a logical vector indicating which cases are complete</li>
-<li><code>na.omit removes()</code> removes rows with missing data</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>missing.values &lt;-  c(1,2,NA, 4, 5, NA, 7, NA, NA)
-complete.cases(missing.values)</pre>
-
-<pre >## [1]  TRUE  TRUE FALSE  TRUE  TRUE FALSE  TRUE FALSE FALSE</pre>
-
-<pre class = 'prettyprint lang-r'>na.omit(missing.values)</pre>
-
-<pre >## [1] 1 2 4 5 7
-## attr(,&quot;na.action&quot;)
-## [1] 3 6 8 9
-## attr(,&quot;class&quot;)
-## [1] &quot;omit&quot;</pre>
-
-<p>Many packages provide functions for handling missing data. Check <strong>dplyr, Amelia, Hmisc, missForest</strong> packages for examples.</p>
-
-</article></slide><slide class=""><hgroup><h2>Import Data</h2></hgroup><article  id="import-data" class="smaller ">
-
-<ul>
-<li><code>read.table(file)</code></li>
-<li><code>read.csv(file)</code></li>
-<li><code>read.csv2(file)</code></li>
-<li><code>read.delim(file)</code></li>
-<li><code>read.delim2(file)</code></li>
-</ul>
-
-<p>Check <strong>readr, XLConnect</strong> packages to import data from excel files</p>
-
-</article></slide><slide class=""><hgroup><h2>Import Data</h2></hgroup><article  id="import-data-1" class="smaller ">
-
-<p>You can import data from other statistical programs using <strong>foreign</strong> and <strong>Hmisc</strong> packages</p>
-
-<pre class = 'prettyprint lang-r'>library(foreign)
-library(Hmisc)
-# SPSS 
-data.spss &lt;- read.spss(&quot;File name&quot;)
-
-# SAS 
-data.sas &lt;- sasxport.get(&quot;File name&quot;)
-
-# Stata
-data.stata &lt;- read.stata(&quot;File name&quot;)
-
-# Systat 
-data.systat &lt;- read.systat(&quot;File name&quot;)</pre>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>BASIC DATA OPERATIONS</h2></hgroup><article  id="basic-data-operations" class="smaller ">
-
-</article></slide><slide class=""><hgroup><h2>Rename variable</h2></hgroup><article  id="rename-variable" class="smaller ">
-
-<p>Renaming a variable using <code>names()</code> function.</p>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-names(mtcars)</pre>
-
-<pre >##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
-## [11] &quot;carb&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>names(mtcars)[2] = &quot;lyc&quot;
-names(mtcars)</pre>
-
-<pre >##  [1] &quot;mpg&quot;  &quot;lyc&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
-## [11] &quot;carb&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Rename variables</h2></hgroup><article  id="rename-variables" class="smaller ">
-
-<p><strong>Tidyverse</strong> is a collection of packages that are essential for data analysis. One of the most useful packages is the <strong>dplyr</strong> package. <code>rename()</code> package helps to rename variables.</p>
-
-<p><code>%&gt;%</code> function is the pipeline function called from <strong>magrittr</strong> package. It simplifies analysis to a great extent.</p>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-library(dplyr)
-data(mtcars)
-mtcars &lt;- mtcars %&gt;%
-  rename(MilesPGallon = mpg)
-names(mtcars)</pre>
-
-<pre >##  [1] &quot;MilesPGallon&quot; &quot;cyl&quot;          &quot;disp&quot;         &quot;hp&quot;           &quot;drat&quot;        
-##  [6] &quot;wt&quot;           &quot;qsec&quot;         &quot;vs&quot;           &quot;am&quot;           &quot;gear&quot;        
-## [11] &quot;carb&quot;</pre>
-
-</article></slide><slide class=""><hgroup><h2>Create a new variable</h2></hgroup><article  id="create-a-new-variable" class="smaller ">
-
-<p>The base R function has <code>$</code> operator that acts on vectors, matrices, arrays and lists to extract or replace parts.</p>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-mtcars$mpgc &lt;- mtcars$mpg / mtcars$cyl
-summary(mtcars$mpgc)</pre>
-
-<pre >##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.300   1.928   3.108   3.837   5.700   8.475</pre>
-
-<p>We can do the same with <code>mutate()</code> function in <strong>dplyr</strong> package.</p>
-
-<pre class = 'prettyprint lang-r'>library(dplyr)
-library(datasets)
-data(mtcars)
-mtcars &lt;- mtcars %&gt;%
-  mutate( mpgc = mpg /cyl)</pre>
-
-</article></slide><slide class=""><hgroup><h2>Ordering variables</h2></hgroup><article  id="ordering-variables" class="smaller ">
-
-<p>The base <code>order()</code> function rearranges the data set. <code>attach()</code> function attaches the dataset to the environment, so objects in the database can be accessed by simply giving their names. <strong>dplyr</strong> package has <code>arrange()</code> function for the same purpose, and it is more convenient.</p>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-attach(mtcars)
-mtcars[order(mpg, decreasing = TRUE),] %&gt;% 
-  head()</pre>
-
-<pre >##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
-## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
-## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
-## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
-## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
-## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
-## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2</pre>
-
-</article></slide><slide class=""><hgroup><h2>Merging datasets</h2></hgroup><article  id="merging-datasets" class="smaller ">
-
-<p>The base <code>merge()</code> function merges data sets by common columns or row names. Similarly, <code>_join()</code> functions in dplyr packages offer more options. Compare these two data sets using <code>merge()</code> function.</p>
-
-<pre class = 'prettyprint lang-r'>## Create two data frames 
-df_1 &lt;- data.frame(id = c(1,2,3), value = rnorm(3,1,0.2))
-df_2 &lt;- data.frame(id = c(3,4,5,6), value = rnorm(4,1,0.2))
-new_df &lt;- merge(df_1, df_2, by = &quot;id&quot;)
-new_df_1 &lt;- merge(df_1, df_2, by = &quot;id&quot;, all = TRUE)
-print(new_df)</pre>
-
-<pre >##   id   value.x  value.y
-## 1  3 0.7817505 1.256185</pre>
-
-</article></slide><slide class=""><hgroup><h2>Merging datasets using join functions</h2></hgroup><article  id="merging-datasets-using-join-functions" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>inner_join(x, y, by = NULL)
-left_join(x, y, by = NULL)
-right_join(x, y, by = NULL)
-full_join(x, y, by = NULL)
-anti_join(x, y, by = NULL)</pre>
-
-<pre class = 'prettyprint lang-r'>library(dplyr)
-inner_join(df_1,df_2,by=&quot;id&quot;)</pre>
-
-<pre >##   id   value.x  value.y
-## 1  3 0.7817505 1.256185</pre>
-
-</article></slide><slide class=""><hgroup><h2>Subsetting data</h2></hgroup><article  id="subsetting-data" class="smaller ">
-
-<ul>
-<li><code>X[n]</code> select nth element; nth row if dim &gt; 2</li>
-<li><code>X[n,k]</code> select element from nth row, kth column</li>
-<li><code>X[-n]</code> All but nth element</li>
-<li><code>X[1:n]</code> First n elements</li>
-<li><code>X[c(a,b,c)]</code> select multiple elements</li>
-<li><code>X[x &gt; k]</code> selects elements greater than k</li>
-<li><code>X[x &gt; k | x &lt; k]</code> selects elements greater than or less</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-mtcars$mpg[10:15]</pre>
-
-<pre >## [1] 19.2 17.8 16.4 17.3 15.2 10.4</pre>
-
-<pre class = 'prettyprint lang-r'>mtcars$mpg[mpg &gt; 30]</pre>
-
-<pre >## [1] 32.4 30.4 33.9 30.4</pre>
-
-</article></slide><slide class=""><hgroup><h2>Subsetting data</h2></hgroup><article  id="subsetting-data-1" class="smaller ">
-
-<p>The base <code>subset()</code> function and <code>filter()</code> or <code>select()</code> functions from <strong>dplyr</strong> package offers more flexibility when subsetting data.</p>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(airquality)
-subset(airquality, Temp &gt; 80, select = c(Ozone, Temp)) %&gt;% 
-  head()</pre>
-
-<pre >##    Ozone Temp
-## 29    45   81
-## 35    NA   84
-## 36    NA   85
-## 38    29   82
-## 39    NA   87
-## 40    71   90</pre>
-
-</article></slide><slide class=""><hgroup><h2>Summarizing data sets</h2></hgroup><article  id="summarizing-data-sets" class="smaller ">
-
-<p>Use <code>summary()</code> function to summarize variables</p>
-
-<pre class = 'prettyprint lang-r'>data(mtcars)
-summary(mtcars[,1:4])</pre>
-
-<pre >##       mpg             cyl             disp             hp       
-##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
-##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
-##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  
-##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
-##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
-##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0</pre>
-
-</article></slide><slide class=""><hgroup><h2>Summarizing data sets</h2></hgroup><article  id="summarizing-data-sets-1" class="smaller ">
-
-<p>Row and column sums and menas can be retrieved by these functions:</p>
-
-<pre class = 'prettyprint lang-r'>colSums (x, na.rm = FALSE, dims = 1)
-rowSums (x, na.rm = FALSE, dims = 1)
-colMeans(x, na.rm = FALSE, dims = 1)
-rowMeans(x, na.rm = FALSE, dims = 1)</pre>
-
-<pre class = 'prettyprint lang-r'>library(datasets)
-data(mtcars)
-colMeans(mtcars)</pre>
-
-<pre >##        mpg        cyl       disp         hp       drat         wt       qsec 
-##  20.090625   6.187500 230.721875 146.687500   3.596563   3.217250  17.848750 
-##         vs         am       gear       carb 
-##   0.437500   0.406250   3.687500   2.812500</pre>
-
-<p>Note: There are many packages that offer summary tables such as <strong>stargazer</strong>.</p>
-
-</article></slide><slide class=""><hgroup><h2>Stargazer package</h2></hgroup><article  id="stargazer-package" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(stargazer)
-library(dplyr)
-library(datasets)
-data(mtcars)
-mtcars %&gt;% 
-  select(hp, mpg,disp) %&gt;% 
-  stargazer(., median = TRUE, 
-            iqr = TRUE, type = &quot;text&quot;)</pre>
-
-<pre >## 
-## ==============================================================
-## Statistic N   Mean   St. Dev. Min Pctl(25) Median Pctl(75) Max
-## --------------------------------------------------------------
-## hp        32 146.688  68.563  52    96.5    123     180    335
-## mpg       32 20.091   6.027   10    15.4    19.2    22.8   34 
-## disp      32 230.722 123.939  71   120.8   196.3    326    472
-## --------------------------------------------------------------</pre>
-
-</article></slide><slide class=""><hgroup><h2>Reshaping data sets</h2></hgroup><article  id="reshaping-data-sets" class="smaller ">
-
-<p>To reshape data, <strong>tidyr</strong> package has <code>pivot_()</code> functions (pivot_longer and pivot_wider). Assume we have 3 companies with daily average stock prices in USD.</p>
-
-<pre class = 'prettyprint lang-r'>require(tidyr)
-set.seed(23)
-stocks &lt;- data.frame(
-  DATE = as.Date(&#39;2017-01-01&#39;) + 0:9,
-  A = as.integer(rnorm(10, 5, 1)),
-  B = as.integer(rnorm(10, 10, 1)),
-  C = as.integer(rnorm(10, 15, 1)))
-stocks.long &lt;- pivot_longer(stocks, A:C, names_to = &quot;Companies&quot;,
-                            values_to = &quot;Price&quot;)
-head(stocks.long)</pre>
-
-<pre >## # A tibble: 6 x 3
-##   DATE       Companies Price
-##   &lt;date&gt;     &lt;chr&gt;     &lt;int&gt;
-## 1 2017-01-01 A             5
-## 2 2017-01-01 B            10
-## 3 2017-01-01 C            15
-## 4 2017-01-02 A             4
-## 5 2017-01-02 B             8
-## 6 2017-01-02 C            14</pre>
-
-</article></slide><slide class=""><hgroup><h2>Strings</h2></hgroup><article  id="strings" class="smaller ">
-
-<p><strong>stringr</strong> package offers <code>str_()</code> functions to handle strings in R.</p>
-
-<pre class = 'prettyprint lang-r'>library(stringr)
-str_to_upper(string, locale = &quot;&quot;)
-str_to_lower(string, locale = &quot;&quot;)
-str_to_title(string, locale = &quot;&quot;)
-str_count(string, pattern = &quot;&quot;)
-str_length(string)
-str_detect(string, pattern)
-str_extract(string, pattern)
-str_replace(string, pattern, replacement)
-str_sub(string, start = 1L, end = -1L)
-str_trim(string, side = c(&quot;both&quot;, &quot;left&quot;, &quot;right&quot;))</pre></article></slide>
+<li><a href='https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/' title=''>https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/</a></li>
+<li><a href='https://purrr.tidyverse.org/' title=''>https://purrr.tidyverse.org/</a></li>
+<li><a href='https://bit.ly/2RfnemY' title=''>https://bit.ly/2RfnemY</a></li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
